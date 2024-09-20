@@ -1,4 +1,5 @@
 ﻿using FluentMigrator.Runner;
+using Infrastructure.Seed;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
