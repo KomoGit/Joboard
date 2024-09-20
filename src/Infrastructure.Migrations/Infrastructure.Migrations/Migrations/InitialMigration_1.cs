@@ -1,21 +1,22 @@
-﻿using FluentMigrator;
+﻿using Domain.Entities;
+using FluentMigrator;
 
 namespace Infrastructure.Migrations.Migrations
 {
-    [Migration(1, "Category table created")]
+    [Migration(1, "Initial tables and schema made.")]
     public class InitialMigration_1 : ForwardOnlyMigration
     {
-        public override void Up() 
+        public override void Up()
         {
-            //for running a custom sql, you can choose Execute.Sql method 
-            Execute.Sql(@"CREATE TABLE public.""Categories"" 
-                          (
-                          	""Id"" uuid NOT NULL,
-                          	""Name"" text NOT NULL,
-                          	""Description"" text NULL,
-                          	CONSTRAINT ""Categories_pkey"" PRIMARY KEY (""Id"")
-                          );");
-            //Execute.EmbeddedScript("FluentMigratorDemo.Scripts.InsertCategories.sql");
-        } 
+            Create.Schema("client_side");
+
+            Create.Table("jobs")
+                .InSchema("client_side")
+                .WithColumn("id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("name").AsString(255).NotNullable();
+
+            Create.Table(typeof(CategoryEntity).Name)
+                .InSchema("client_side");
+        }
     }
 }
