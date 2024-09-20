@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.Domain
+﻿namespace SharedKernel.Domain.Seedwork
 {
     public class BaseEntity
     {

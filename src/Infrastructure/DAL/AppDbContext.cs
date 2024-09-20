@@ -3,7 +3,7 @@ using Npgsql;
 using SharedKernel.Domain.Settings;
 using System.Data;
 
-namespace Infrastructure
+namespace Infrastructure.DAL
 {
     public class AppDbContext(IOptions<DatabaseSettings> dbSettings)
     {

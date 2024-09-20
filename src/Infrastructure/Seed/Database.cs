@@ -1,8 +1,9 @@
 ﻿using Dapper;
+using Infrastructure.DAL;
 using Microsoft.Extensions.Options;
 using SharedKernel.Domain.Settings;
 
-namespace Infrastructure
+namespace Infrastructure.Seed
 {
     public class Database(AppDbContext context, IOptions<DatabaseSettings> settings)
     {
