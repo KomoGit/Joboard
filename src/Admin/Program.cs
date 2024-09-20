@@ -1,4 +1,6 @@
 using Infrastructure.DAL;
+using Infrastructure.Extensions;
+using Infrastructure.Seed;
 using Serilog;
 using SharedKernel.Domain.Settings;
 
@@ -27,6 +29,8 @@ builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection(na
 #endregion
 #region Db Connection
 builder.Services.AddSingleton<AppDbContext>();
+builder.Services.AddSingleton<Database>();
+builder.Services.AddFluentMigratorService(builder.Configuration);
 #endregion
 var app = builder.Build();
 
@@ -37,5 +41,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.Migrate();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
