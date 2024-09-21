@@ -10,13 +10,15 @@ namespace Infrastructure.Migrations.Migrations
         {
             Create.Schema("client_side");
 
-            Create.Table("jobs")
+            Create.Table("job")
                 .InSchema("client_side")
-                .WithColumn("id").AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn("name").AsString(255).NotNullable();
-
-            Create.Table(typeof(CategoryEntity).Name)
-                .InSchema("client_side");
+                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn("name").AsString(255).NotNullable()
+                .WithColumn("description").AsString(3000).NotNullable()
+                .WithColumn("views").AsInt32().WithDefaultValue(0)
+                .WithColumn("expiration_date").AsDateTime().WithDefaultValue(DateTime.UtcNow.AddDays(14))
+                .WithColumn("create_date").AsDateTime().WithDefaultValue(DateTime.UtcNow)
+                .WithColumn("update_date").AsDateTime().WithDefaultValue(DateTime.UtcNow);
         }
     }
 }
