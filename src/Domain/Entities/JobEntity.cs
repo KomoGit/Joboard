@@ -7,17 +7,17 @@ namespace Domain.Entities
         public string Name { get; private set; }
         public string Description { get; private set; }
         public int Views { get; private set; }
-        public DateTime ExpirationDate { get; private set; }
-        public DateTime CreateDate { get; private set; }
-        public DateTime UpdateDate { get; private set; }
+        public DateTime Expiration_Date { get; private set; }
+        public DateTime Create_Date { get; private set; }
+        public DateTime Update_Date { get; private set; }
 
 
         public void SetDetails(string name, string description, DateTime expDate)
         {
-            ExpirationDate = expDate;
+            Expiration_Date = expDate;
             Name = name;
             Description = description;
-            CreateDate = DateTime.UtcNow;
+            Create_Date = DateTime.UtcNow;
         }
 
         public void IncreaseViews()
@@ -27,7 +27,7 @@ namespace Domain.Entities
 
         public void UpdateDateTime()
         {
-            UpdateDate = DateTime.UtcNow;   
+            Update_Date = DateTime.UtcNow;   
         }
     }
 }
