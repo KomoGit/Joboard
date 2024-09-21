@@ -1,6 +1,10 @@
+using Application.Usecase;
+using Domain.Repositories;
 using Infrastructure.DAL;
 using Infrastructure.Extensions;
+using Infrastructure.Middleware;
 using Infrastructure.Seed;
+using Job.Module.Services;
 using Serilog;
 using SharedKernel.Domain.Settings;
 
@@ -32,6 +36,18 @@ builder.Services.AddSingleton<AppDbContext>();
 builder.Services.AddSingleton<Database>();
 builder.Services.AddFluentMigratorService(builder.Configuration);
 #endregion
+#region Service Registry
+#region Repository
+builder.Services.AddScoped<IJobRepository, JobRepository>();
+#endregion
+#region Service
+builder.Services.AddScoped<IJobService, JobService>();
+#endregion
+#endregion
+#region Global Exception Handler
+builder.Services.AddLogging();
+builder.Services.AddTransient<GlobalExceptionHandler>();
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,5 +60,6 @@ if (app.Environment.IsDevelopment())
 app.Migrate();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<GlobalExceptionHandler>();
 app.MapControllers();
 app.Run();
