@@ -10,7 +10,6 @@ namespace Infrastructure.Seed
         private readonly AppDbContext _context = context;
         private readonly DatabaseSettings _dbSettings = settings.Value;
 
-
         public void CreateDatabase()
         {
             using var connection = _context.CreateMasterConnection();
