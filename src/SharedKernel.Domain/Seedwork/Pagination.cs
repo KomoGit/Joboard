@@ -2,7 +2,7 @@
 {
     public class Pagination<T>
     {
-        public Pagination(List<T> allItems, int page, int size, int totalCount)
+        public Pagination(List<T> allItems, int page, int size)
         {
             //Failsafe
             if (page <= 0) page = 1;
@@ -13,7 +13,7 @@
             CurrentPage = page;
             HasAfter = page < TotalPages;
             HasBefore = page > 1;
-            TotalCount = totalCount;
+            TotalCount = allItems.Count;
         }
 
         public List<T> Data { get; set; }
