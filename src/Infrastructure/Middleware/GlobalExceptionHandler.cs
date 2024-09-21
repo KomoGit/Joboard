@@ -22,17 +22,7 @@ namespace Infrastructure.Middleware
             {
                 _logger.LogError(e, e.Message);
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                if (IsDuplicateKeyViolation(e))
-                {
-                    problem = new()
-                    {
-                        Status = (int)HttpStatusCode.BadRequest,
-                        Type = "Duplicate key error",
-                        Title = "Duplicate key violation",
-                        Detail = "The item already exists.",
-                    };
-                }
-                else if (e is not INonSensitiveException)
+                if (e is not INonSensitiveException)
                 {
                     problem = new()
                     {
@@ -56,15 +46,6 @@ namespace Infrastructure.Middleware
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(json);
             }
-        }
-
-        private static bool IsDuplicateKeyViolation(Exception e)
-        {
-            if (e.InnerException != null)
-            {
-                return e.InnerException!.Message.Contains("Duplicate entry");
-            }
-            return false;
         }
     }
 }
