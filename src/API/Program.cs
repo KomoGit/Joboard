@@ -1,4 +1,9 @@
+using Application.Usecase;
+using Domain.Repositories;
 using Infrastructure.DAL;
+using Infrastructure.Middleware;
+using Job.Module.Queries;
+using Job.Module.Services;
 using Serilog;
 using SharedKernel.Domain.Settings;
 
@@ -19,23 +24,31 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 builder.Host.UseSerilog();
 #endregion
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 #region Configurations
-builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection(nameof(DatabaseSettings)));
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection($"{typeof(DatabaseSettings).Name}Readonly"));
 #endregion
 #region Db Connection
 builder.Services.AddSingleton<AppDbContext>();
 #endregion
-var app = builder.Build();
+#region Service Registry
+builder.Services.AddScoped<IJobRepository, JobRepository>();
+builder.Services.AddScoped<IJobService, JobService>();
+builder.Services.AddScoped<IJobQueries, JobQueries>();
+#endregion
+#region Global Exception Handler
+builder.Services.AddLogging();
+builder.Services.AddTransient<GlobalExceptionHandler>();
+#endregion
 
+var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<GlobalExceptionHandler>();
 app.MapControllers();
 app.Run();
